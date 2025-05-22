@@ -1,5 +1,8 @@
 package com.norameyer.healtifyy
 
+
+
+// класс, отвечающий за нижнюю навигацию
 sealed class NavigationItems(
     var route: String,
     var icon: Int,

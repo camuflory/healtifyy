@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-
+// итнерфейс для удаления, добавления и выборки из таблицы сахара
 @Dao
 interface SugarDao {
 
