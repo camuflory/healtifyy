@@ -1,5 +1,3 @@
-package com.norameyer.healtifyy.screens
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
@@ -12,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -21,17 +18,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.norameyer.healtifyy.NavigationItems
+import NavigationItems
+import PillsScreen
+import PressureScreen
+import SugarScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-@Preview(showBackground = true)
 fun MainScreen() {
     val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
-    ) { Navigation(navController) }
-
+    Scaffold(bottomBar = { BottomNavigationBar(navController) }) { Navigation(navController) }
 }
 
 @Composable
@@ -40,10 +36,11 @@ fun BottomNavigationBar(navController: NavController) {
         NavigationItems.Pressure,
         NavigationItems.Pills,
         NavigationItems.Sugar,
+        NavigationItems.Add
     )
 
     BottomNavigation(
-        backgroundColor = Color.LightGray
+        backgroundColor = Color(0xFF7DB797)
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -86,6 +83,10 @@ fun Navigation(navController: NavHostController) {
 
         composable(NavigationItems.Sugar.route) {
             SugarScreen()
+        }
+
+        composable(NavigationItems.Add.route) {
+            AddScreen()
         }
     }
 }
