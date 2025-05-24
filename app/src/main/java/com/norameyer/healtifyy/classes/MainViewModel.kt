@@ -20,9 +20,9 @@ class MainViewModel(private val db: MainDB) : ViewModel() {
     val allPills = db.pillsDao.getAllPills()  // все значения таблеток из бд
     val allSugar = db.sugarDao.getAllSugar()  // все значения сахара из бд
 
-    var currPressure: PressureEntity? = null  // текущий объект давления для добавления в бд
-    var currPills: PillsEntity? = null  // текущий объект таблеток для добавления в бд
-    var currSugar: SugarEntity? = null  // текущий объект сахара для добавления в бд
+    private var currPressure: PressureEntity? = null  // текущий объект давления для добавления в бд
+    private var currPills: PillsEntity? = null  // текущий объект таблеток для добавления в бд
+    private var currSugar: SugarEntity? = null  // текущий объект сахара для добавления в бд
 
     var textPressure = mutableStateOf("")  // текущее значение давления
     var textSugar = mutableStateOf("")  // текущее значение сахара
@@ -34,47 +34,53 @@ class MainViewModel(private val db: MainDB) : ViewModel() {
 
     fun insertPressure() = viewModelScope.launch {
         // Добавление давления в бд */
-        val item = currPressure?.copy(  // создание копии объекта для добавления в бд
-            pressure = textPressure.value,
-            time = getCurrentTime(),
-            arm = textArm.value) ?: PressureEntity(
-            pressure = textPressure.value,
-            time = getCurrentTime(),
-            arm = textArm.value
-        )
-        db.pressureDao.insertPressure(item)  // добавление в бд
-        currPressure = null
-        textPressure.value = ""
-        textArm.value = ""
+        if (textPressure.value != "" && textArm.value != "") {
+            val item = currPressure?.copy(  // создание копии объекта для добавления в бд
+                pressure = textPressure.value,
+                time = getCurrentTime(),
+                arm = textArm.value) ?: PressureEntity(
+                pressure = textPressure.value,
+                time = getCurrentTime(),
+                arm = textArm.value
+            )
+            db.pressureDao.insertPressure(item)  // добавление в бд
+            currPressure = null
+            textPressure.value = ""
+            textArm.value = ""
+        }
     }
 
     fun insertSugar() = viewModelScope.launch {
         // Добавление сахара в бд */
-        val item = currSugar?.copy(  // создание копии объекта для добавления в бд
-            rate = textSugar.value,
-            time = getCurrentTime()) ?: SugarEntity(
-            rate = textSugar.value,
-            time = getCurrentTime()
-        )
-        db.sugarDao.insertSugar(item)  // добавление в бд
-        currSugar = null
-        textSugar.value = ""
+        if (textSugar.value != "") {
+            val item = currSugar?.copy(  // создание копии объекта для добавления в бд
+                rate = textSugar.value,
+                time = getCurrentTime()) ?: SugarEntity(
+                rate = textSugar.value,
+                time = getCurrentTime()
+            )
+            db.sugarDao.insertSugar(item)  // добавление в бд
+            currSugar = null
+            textSugar.value = ""
+        }
     }
 
     fun insertPills() = viewModelScope.launch {
         // Добавление таблеток в бд */
-        val item = currPills?.copy(  // создание копии объекта для добавления в бд
-            time = getCurrentTime(),
-            pillsName = textPills.value,
-            amount = textDose.value) ?: PillsEntity(
-            time = getCurrentTime(),
-            pillsName = textPills.value,
-            amount = textDose.value
-        )
-        db.pillsDao.insertPills(item)  // добавление в бд
-        currPills = null
-        textPills.value = ""
-        textDose.value = ""
+        if (textPills.value != "" && textDose.value != "") {
+            val item = currPills?.copy(  // создание копии объекта для добавления в бд
+                time = getCurrentTime(),
+                pillsName = textPills.value,
+                amount = textDose.value) ?: PillsEntity(
+                time = getCurrentTime(),
+                pillsName = textPills.value,
+                amount = textDose.value
+            )
+            db.pillsDao.insertPills(item)  // добавление в бд
+            currPills = null
+            textPills.value = ""
+            textDose.value = ""
+        }
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +116,7 @@ class MainViewModel(private val db: MainDB) : ViewModel() {
         }
     }
 
-    fun getCurrentTime() : String {
+    private fun getCurrentTime() : String {
         /** текущее время в виде строки */
         val sdf = SimpleDateFormat("dd.MM HH:mm", Locale.getDefault())
         val date = Date(System.currentTimeMillis())
