@@ -23,7 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import MainViewModel
+import androidx.compose.foundation.background
+import androidx.compose.material.TextFieldDefaults
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class)
@@ -57,7 +58,10 @@ fun AddScreen(mvm: MainViewModel = viewModel(factory = MainViewModel.factory)) {
                 onValueChange = { mvm.textPressure.value = it },
                 label = { Text(text = "давление", color = Color.Gray) },
                 maxLines = 1,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    cursorColor = Color(0xFF7DB797),
+                    focusedBorderColor = Color(0xFF7DB797))
             )
 
             // ARM
@@ -69,10 +73,17 @@ fun AddScreen(mvm: MainViewModel = viewModel(factory = MainViewModel.factory)) {
                     label = { Text("рука", color = Color.Gray) },
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
-                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+                        cursorColor = Color(0xFF7DB797),
+                        focusedTrailingIconColor = Color(0xFF7DB797),
+                        focusedBorderColor = Color(0xFF7DB797)),
                     maxLines = 1
                 )
-                ExposedDropdownMenu(expanded, onDismissRequest = { expanded = false }) {
+                ExposedDropdownMenu(
+                    expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.background(Color(0xFFF2FFF9))
+                ) {
                     options.forEach { selectedArm ->
                         DropdownMenuItem(
                             text = { Text(selectedArm) },
@@ -93,17 +104,22 @@ fun AddScreen(mvm: MainViewModel = viewModel(factory = MainViewModel.factory)) {
                 label = { Text("сахар", color = Color.Gray) },
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    cursorColor = Color(0xFF7DB797),
+                    focusedBorderColor = Color(0xFF7DB797))
             )
 
 
-//PILLS NAME
+            //PILLS NAME
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth().padding(15.dp),
                 value = mvm.textPills.value,
                 onValueChange = { mvm.textPills.value = it },
                 label = { Text("таблетки", color = Color.Gray) },
-                maxLines = 1
-
+                maxLines = 1,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    cursorColor = Color(0xFF7DB797),
+                    focusedBorderColor = Color(0xFF7DB797))
             )
 
             //PILLS AMOUNT
@@ -112,7 +128,10 @@ fun AddScreen(mvm: MainViewModel = viewModel(factory = MainViewModel.factory)) {
                 value = mvm.textDose.value,
                 onValueChange = { mvm.textDose.value = it },
                 label = { Text("дозировка", color = Color.Gray) },
-                maxLines = 1
+                maxLines = 1,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    cursorColor = Color(0xFF7DB797),
+                    focusedBorderColor = Color(0xFF7DB797))
             )
 
             Button(
